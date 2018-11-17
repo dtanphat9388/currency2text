@@ -23,11 +23,19 @@
  */
 const _ = require('lodash')
 
-const blocks = ['tỷ', 'triệu', 'ngàn', 'đồng'];
+const blocks = ['tỷ', 'triệu', 'ngàn'];
 
-function convert(number) {
+const defaultOptions = {
+  unit: 'đồng',
+}
+
+function convert(number, options=defaultOptions) {
+  const { unit } = options;
+
   if (isNaN(number)) throw new Error("Argument have to a number!");
-  if (number == 0) return `${number2str(number)} đồng`;
+  if (number == 0) return `${number2str(number)} ${unit}`;
+
+  blocks.push(unit)
 
   const majorBlock = fillNumber(number)
   const minorBlocks = majorBlock.match(/\d{3}/g)
@@ -59,7 +67,7 @@ function handleMinor(number, unit) {
   
   switch(`${number}`.length) {
     case 1: return unit === "đồng" ? `lẻ ${number2str(number)}` : number2str(number);
-    case 2: return handleChuc(number);
+    case 2: return unit === "đồng" ? `lẻ ${handleChuc(number)}` : handleChuc(number);
     case 3: {
       let tram = parseInt(number / 100); // 325 => 3
       let chuc = number % 100;           // 325 => 25
@@ -84,5 +92,5 @@ function number2str(number) {
   return numberStr[number]
 }
 
-console.log(convert(545000045003))
+
 module.exports = convert
