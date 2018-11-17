@@ -1,0 +1,26 @@
+{
+  "name": "currency2string",
+  "version": "1.0.0",
+  "description": "To convert currency number to text",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtanphat9388/currency2string.git"
+  },
+  "keywords": [
+    "convert",
+    "currency"
+  ],
+  "author": "dtanphat9388",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dtanphat9388/currency2string/issues"
+  },
+  "homepage": "https://github.com/dtanphat9388/currency2string#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}
