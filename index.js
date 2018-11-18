@@ -67,15 +67,6 @@ function fillNumber(number) {
 }
 
 
-function handleDigitToStr(number, unit) {
-  switch(`${number}`.length) {
-    case 1: return oneDigitToStr(number);
-    case 2: return twoDigitToStr(number);
-    case 3: return threeDigitToStr(number);
-  }
-}
-
-
 function addTextByContext(number) {
   switch (`${number}`.length) {
     case 1: return prevStr += "không trăm lẻ";
@@ -84,6 +75,14 @@ function addTextByContext(number) {
   }
 }
 
+
+function handleDigitToStr(number, unit) {
+  switch(`${number}`.length) {
+    case 1: return oneDigitToStr(number);
+    case 2: return twoDigitToStr(number);
+    case 3: return threeDigitToStr(number);
+  }
+}
 
 function oneDigitToStr(number) {
   return number2str(number)
