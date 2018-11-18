@@ -118,5 +118,5 @@ function number2str(number) {
   return numberStr[number]
 }
 
-convert(321400043000)
+
 module.exports = convert
