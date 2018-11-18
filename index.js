@@ -36,20 +36,19 @@ function convert(number, options=defaultOptions) {
 
   switch (`${number}`.length) {
     case 1: case 2: case 3: {
-      return `${handleDigitToStr(number, "đồng")} ${unit}`
+      return `${handleDigitToStr(number)} ${unit}`
     }
   }
 
   blocks[3] || blocks.push(unit)
 
-  const mahor = fillNumber(number)
-  const minorsString = mahor.match(/\d{3}/g)
+  const major = fillNumber(number)
+  const minorsString = major.match(/\d{3}/g)
   const minorsNumber = _.map(minorsString, (minor) => +minor) // remove 0 trong mỗi minor block
 
   const minorsCompacted = _.compact(_.zipWith(minorsNumber, blocks, (number, block) => {
     if (number == 0 && block == "đồng") return "chẵn";
-    if (number == 0 && block !== "đồng") return "";
-    // const minorhandled = handleDigitToStr(number, block);
+    if (number == 0) return number;
     return {number, block}
   }))
 
@@ -83,7 +82,7 @@ function fillNumber(number) {
 }
 
 
-function handleDigitToStr(number, unit) {
+function handleDigitToStr(number) {
   switch(`${number}`.length) {
     case 1: return oneDigitToStr(number);
     case 2: return twoDigitToStr(number);
