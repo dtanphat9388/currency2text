@@ -43,15 +43,31 @@ function convert(number, options=defaultOptions) {
   blocks[3] || blocks.push(unit)
 
   const mahor = fillNumber(number)
-  const minors = mahor.match(/\d{3}/g)
-  const minorBlocksTrimed = _.map(minors, (minor) => +minor) // remove 0 trong mỗi minor block
+  const minorsString = mahor.match(/\d{3}/g)
+  const minorsNumber = _.map(minorsString, (minor) => +minor) // remove 0 trong mỗi minor block
 
-  return _.join(_.compact(_.zipWith(minorBlocksTrimed, blocks, (minor, block) => {
-    if (minor == 0 && block == "đồng") return "chẵn";
-    if (minor == 0 && block !== "đồng") return "";
-    const minorhandled = handleDigitToStr(minor, block);
-    return `${minorhandled} ${block}`
-  })), " ")
+  const minorsCompacted = _.compact(_.zipWith(minorsNumber, blocks, (number, block) => {
+    if (number == 0 && block == "đồng") return "chẵn";
+    if (number == 0 && block !== "đồng") return "";
+    // const minorhandled = handleDigitToStr(number, block);
+    return {number, block}
+  }))
+
+  return _.reduce(minorsCompacted, (prev, curr, index, list) => {
+    let prevStr = typeof prev !== "string" ? `${handleDigitToStr(prev.number)} ${prev.block}` : prev;
+    let currStr = typeof curr !== "string" ? `${handleDigitToStr(curr.number)} ${curr.block}` : curr;
+
+    if (currStr !== "chẵn") {
+      switch (`${curr.number}`.length) {
+        case 1: prevStr += " không trăm lẻ"; break;
+        case 2: prevStr += " không trăm"   ; break;
+      }
+    }
+
+    const unit = typeof currStr === "string" ? currStr : options.unit;
+    return (list[-1] !== curr) ? `${prevStr} ${currStr}`
+                               : `${prevStr} ${currStr} ${unit}`
+  })
 }
 
 
@@ -90,7 +106,8 @@ function twoDigitToStr(number) {
 function threeDigitToStr(number) {
   let tram = parseInt(number / 100); // 325 => 3
   let chuc = number % 100;           // 325 => 25
-  if (chuc < 10) chuc = `lẻ ${oneDigitToStr(chuc)}`;
+  if (chuc === 0) return `${oneDigitToStr(tram)} trăm`;
+  if (chuc < 10 && chuc > 0) chuc = `lẻ ${oneDigitToStr(chuc)}`;
   else { chuc = twoDigitToStr(chuc) };
   return `${oneDigitToStr(tram)} trăm ${chuc}`
 }
@@ -101,5 +118,5 @@ function number2str(number) {
   return numberStr[number]
 }
 
-threeDigitToStr(103)
+convert(321400043000)
 module.exports = convert
