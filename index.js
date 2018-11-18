@@ -35,7 +35,7 @@ function convert(number, options=defaultOptions) {
   if (isNaN(number)) throw new Error("Argument have to a number!");
   if (number == 0) return `${number2str(number)} ${unit}`;
 
-  blocks.push(unit)
+  blocks[3] || blocks.push(unit)
 
   const majorBlock = fillNumber(number)
   const minorBlocks = majorBlock.match(/\d{3}/g)
