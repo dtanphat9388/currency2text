@@ -33,19 +33,24 @@ function convert(number, options=defaultOptions) {
   const { unit } = options;
 
   if (isNaN(number)) throw new Error("Argument have to a number!");
-  if (number == 0) return `${number2str(number)} ${unit}`;
+
+  switch (`${number}`.length) {
+    case 1: case 2: case 3: {
+      return `${handleDigitToStr(number, "đồng")} ${unit}`
+    }
+  }
 
   blocks[3] || blocks.push(unit)
 
-  const majorBlock = fillNumber(number)
-  const minorBlocks = majorBlock.match(/\d{3}/g)
-  const minorBlocksTrimed = _.map(minorBlocks, (minorBlock) => +minorBlock) // remove 0 trong mỗi minor block
+  const mahor = fillNumber(number)
+  const minors = mahor.match(/\d{3}/g)
+  const minorBlocksTrimed = _.map(minors, (minor) => +minor) // remove 0 trong mỗi minor block
 
-  return _.join(_.compact(_.zipWith(minorBlocksTrimed, blocks, (a, b) => {
-    if (b == "đồng" && a == 0) return "chẵn";
-    if (b !== "đồng" && a == 0) return "";
-    const minorhandled = handleMinor(a, b);
-    return `${minorhandled} ${b}`
+  return _.join(_.compact(_.zipWith(minorBlocksTrimed, blocks, (minor, block) => {
+    if (minor == 0 && block == "đồng") return "chẵn";
+    if (minor == 0 && block !== "đồng") return "";
+    const minorhandled = handleDigitToStr(minor, block);
+    return `${minorhandled} ${block}`
   })), " ")
 }
 
@@ -57,40 +62,54 @@ function fillNumber(number) {
   const numberLength = `${number}`.length;
   const fillLength = (numberLength % 12 == 0) ? `${number}`
                                               : _.padStart(`${number}`, (parseInt(numberLength / 12) + 1) * 12, 0)
-  const majorBlock = fillLength.match(/\d{12}/g)[0]
-  return majorBlock
+  const major = fillLength.match(/\d{12}/g)[0]
+  return major
 }
 
 
-function handleMinor(number, unit) {
-  if (!number) return undefined;
-  
+function handleDigitToStr(number, unit) {
   switch(`${number}`.length) {
-    case 1: return unit === "đồng" ? `lẻ ${number2str(number)}` : number2str(number);
-    case 2: return unit === "đồng" ? `lẻ ${handleChuc(number)}` : handleChuc(number);
-    case 3: {
-      let tram = parseInt(number / 100); // 325 => 3
-      let chuc = number % 100;           // 325 => 25
-      return `${number2str(tram)} trăm ${handleChuc(chuc, 3)}`
-    }
+    case 1: return oneDigitToStr(number);
+    case 2: return twoDigitToStr(number);
+    case 3: return threeDigitToStr(number);
   }
 }
 
 
-function handleChuc(number, digits=2) {
-  if (digits == 3 && number < 10) return `lẻ ${number2str(number)}`;
-  if (number == 10) return number2str(number); 
-  let chuc = parseInt(number / 10);  // 25 => 2                              
-  let donvi = number % 10;           // 25 => 5
-  return chuc == 1  ? `mười ${number2str(donvi)}`
-                    : `${number2str(chuc)} mươi ${number2str(donvi)}`;
+function addTextByContext(number) {
+  switch (`${number}`.length) {
+    case 1: return prevStr += "không trăm lẻ";
+    case 2: return prevStr += "không trăm"   ;
+    case 3: return prevStr += "không trăm"   ;
+  }
 }
 
 
-const numberStr = [ "không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười"]
+function oneDigitToStr(number) {
+  return number2str(number)
+}
+
+function twoDigitToStr(number) {
+  if (number == 10) return oneDigitToStr(number); 
+  let chuc = parseInt(number / 10);  // 25 => 2                              
+  let donvi = number % 10;           // 25 => 5
+  return chuc == 1  ? `mười ${oneDigitToStr(donvi)}`
+                    : `${oneDigitToStr(chuc)} mươi ${oneDigitToStr(donvi)}`;
+}
+
+function threeDigitToStr(number) {
+  let tram = parseInt(number / 100); // 325 => 3
+  let chuc = number % 100;           // 325 => 25
+  if (chuc < 10) chuc = `lẻ ${oneDigitToStr(chuc)}`;
+  else { chuc = twoDigitToStr(chuc) };
+  return `${oneDigitToStr(tram)} trăm ${chuc}`
+}
+
+
+const numberStr = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười"]
 function number2str(number) {
   return numberStr[number]
 }
 
-
+threeDigitToStr(103)
 module.exports = convert
