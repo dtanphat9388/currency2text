@@ -67,15 +67,6 @@ function fillNumber(number) {
 }
 
 
-function addTextByContext(number) {
-  switch (`${number}`.length) {
-    case 1: return prevStr += "không trăm lẻ";
-    case 2: return prevStr += "không trăm"   ;
-    case 3: return prevStr += "không trăm"   ;
-  }
-}
-
-
 function handleDigitToStr(number, unit) {
   switch(`${number}`.length) {
     case 1: return oneDigitToStr(number);
