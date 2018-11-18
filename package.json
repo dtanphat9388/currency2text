@@ -21,6 +21,13 @@
   },
   "homepage": "https://github.com/dtanphat9388/currency2string#readme",
   "dependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
     "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
   }
 }
