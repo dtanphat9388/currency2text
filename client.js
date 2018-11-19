@@ -4,7 +4,7 @@ const result = document.querySelector(".result");
 
 const input = document.querySelector('.input')
 const value = document.querySelector('.value')
-console.log(input)
+
 value.oninput = function(evt) {
   if (isNaN(this.textContent)) {
     return alert("chỉ được nhập số! ")
@@ -14,4 +14,8 @@ value.oninput = function(evt) {
                           : input.classList.add("empty")
 
   result.textContent = convert(+this.textContent);
+}
+
+value.onkeypress = function(evt) {
+  if (evt.key === "Enter") evt.preventDefault();
 }
