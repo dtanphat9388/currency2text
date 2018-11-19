@@ -13,7 +13,7 @@ value.oninput = function(evt) {
   this.textContent !== "" ? input.classList.remove("empty")
                           : input.classList.add("empty")
 
-  result.textContent = convert(+this.textContent);
+  result.textContent = convert(this.textContent);
 }
 
 value.onkeypress = function(evt) {

@@ -30,16 +30,9 @@ const defaultOptions = {
 }
 
 function convert(number, options=defaultOptions) {
+  if (!/^\d+$/g.test(number)) throw new Error("Argument have to a number!");
+
   const { unit } = options;
-
-  if (isNaN(number)) throw new Error("Argument have to a number!");
-
-  switch (`${number}`.length) {
-    case 1: case 2: case 3: {
-      return `${handleDigitToStr(number)} ${unit}`
-    }
-  }
-
   blocks[3] || blocks.push(unit)
 
   const major = fillNumber(number)
@@ -51,6 +44,8 @@ function convert(number, options=defaultOptions) {
     if (number == 0) return number;
     return {number, block}
   }))
+
+  if (minorsCompacted.length === 1) return `${handleDigitToStr(number)} ${unit}`
 
   return _.reduce(minorsCompacted, (prev, curr, index, list) => {
     let prevStr = typeof prev !== "string" ? `${handleDigitToStr(prev.number)} ${prev.block}` : prev;
@@ -77,8 +72,8 @@ function fillNumber(number) {
   const numberLength = `${number}`.length;
   const fillLength = (numberLength % 12 == 0) ? `${number}`
                                               : _.padStart(`${number}`, (parseInt(numberLength / 12) + 1) * 12, 0)
-  const major = fillLength.match(/\d{12}/g)[0]
-  return major
+  const major = fillLength.match(/\d{12}/g)
+  return major[0]
 }
 
 

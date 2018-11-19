@@ -23,6 +23,7 @@ img {
 
 .input .value {
   position: relative;
+  font-weight: bold;
 }
 
 .input.empty .placeholder {
@@ -38,5 +39,6 @@ img {
 
 .result {
   font-size: 20px;
+  color: red;
 }
 
