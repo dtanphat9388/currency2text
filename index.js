@@ -34,7 +34,7 @@ function convert(number, options=defaultOptions) {
 
   const { unit } = options;
   blocks[3] || blocks.push(unit)
-
+  
   const major = fillNumber(number)
   const minorsString = major.match(/\d{3}/g)
   const minorsNumber = _.map(minorsString, (minor) => +minor) // remove 0 trong mỗi minor block
@@ -44,8 +44,6 @@ function convert(number, options=defaultOptions) {
     if (number == 0) return number;
     return {number, block}
   }))
-
-  if (minorsCompacted.length === 1) return `${handleDigitToStr(number)} ${unit}`
 
   return _.reduce(minorsCompacted, (prev, curr, index, list) => {
     let prevStr = typeof prev !== "string" ? `${handleDigitToStr(prev.number)} ${prev.block}` : prev;
@@ -63,7 +61,6 @@ function convert(number, options=defaultOptions) {
                                : `${prevStr} ${currStr} ${unit}`
   })
 }
-
 
 /**
  * @description thêm 0 vào trước cho đủ  12 số (123456 => 000000123456)
