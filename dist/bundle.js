@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var convert = __webpack_require__(/*! ./index */ \"./index.js\");\n\nvar result = document.getElementById(\"result\");\nvar input = document.querySelector('input');\n\ninput.oninput = function (evt) {\n  result.textContent = convert(+this.value);\n};\n\n//# sourceURL=webpack:///./client.js?");
+eval("var convert = __webpack_require__(/*! ./index */ \"./index.js\");\n\nvar result = document.querySelector(\".result\");\nvar input = document.querySelector('.input');\nvar value = document.querySelector('.value');\nconsole.log(input);\n\nvalue.oninput = function (evt) {\n  if (isNaN(this.textContent)) {\n    return alert(\"chỉ được nhập số! \");\n  }\n\n  this.textContent !== \"\" ? input.classList.remove(\"empty\") : input.classList.add(\"empty\");\n  result.textContent = convert(+this.textContent);\n};\n\n//# sourceURL=webpack:///./client.js?");
 
 /***/ }),
 

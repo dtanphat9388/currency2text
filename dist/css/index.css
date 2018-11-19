@@ -1,0 +1,42 @@
+#title {
+  text-align: center;
+}
+
+img {
+  width: 60px;
+}
+
+.convert{
+  position: relative;
+  margin-top: 100px;
+  font-family: monospace;
+}
+
+.input div {
+  font-size: 4em;
+  outline: none;
+}
+
+.input .placeholder{
+  display: none;
+}
+
+.input .value {
+  position: relative;
+}
+
+.input.empty .placeholder {
+  color: #ccc;
+  display: block;
+}
+
+.input.empty .value {
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.result {
+  font-size: 20px;
+}
+
