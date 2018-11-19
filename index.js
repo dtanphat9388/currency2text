@@ -98,6 +98,7 @@ function twoDigitToStr(number) {
   if (number == 10) return oneDigitToStr(number); 
   let chuc = parseInt(number / 10);  // 25 => 2                              
   let donvi = number % 10;           // 25 => 5
+  if (donvi === 0) return `${oneDigitToStr(chuc)} mươi`;
   return chuc == 1  ? `mười ${oneDigitToStr(donvi)}`
                     : `${oneDigitToStr(chuc)} mươi ${oneDigitToStr(donvi)}`;
 }
