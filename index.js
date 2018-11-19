@@ -23,19 +23,29 @@
  */
 const _ = require('lodash')
 
-const blocks = ['tỷ', 'triệu', 'ngàn'];
+const blocks = ['triệu', 'ngàn', 'tỷ', 'triệu', 'ngàn'];
+const majorLimit = 18
 
 const defaultOptions = {
   unit: 'đồng',
 }
-
 function convert(number, options=defaultOptions) {
-  if (!/^\d+$/g.test(number)) throw new Error("Argument have to a number!");
+  const _number = `${number}`.slice(-majorLimit); // limited to 18 digits
+  if (!/^\d+$/g.test(_number)) throw new Error("Argument have to a number!");
+
+  switch (_number.length) {
+    case 1: case 2: case 3: return `${handleDigitToStr(number)} ${options.unit}`
+  }
 
   const { unit } = options;
-  blocks[3] || blocks.push(unit)
+  blocks[5] || blocks.push(unit)
   
-  const major = fillNumber(number)
+  const major = fillNumber(_number, majorLimit)
+  return handleMajor(major, blocks, options)
+}
+
+
+function handleMajor(major, blocks, options) {
   const minorsString = major.match(/\d{3}/g)
   const minorsNumber = _.map(minorsString, (minor) => +minor) // remove 0 trong mỗi minor block
 
@@ -62,15 +72,15 @@ function convert(number, options=defaultOptions) {
   })
 }
 
+
 /**
  * @description thêm 0 vào trước cho đủ  12 số (123456 => 000000123456)
  */
-function fillNumber(number) {
+function fillNumber(number, limit) {
   const numberLength = `${number}`.length;
-  const fillLength = (numberLength % 12 == 0) ? `${number}`
-                                              : _.padStart(`${number}`, (parseInt(numberLength / 12) + 1) * 12, 0)
-  const major = fillLength.match(/\d{12}/g)
-  return major[0]
+  const fillLength = (numberLength % limit == 0)  ? `${number}`
+                                                  : _.padStart(`${number}`, limit, 0)
+  return fillLength
 }
 
 
@@ -82,8 +92,9 @@ function handleDigitToStr(number) {
   }
 }
 
+const numberStr = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười"]
 function oneDigitToStr(number) {
-  return number2str(number)
+  return numberStr[number]
 }
 
 function twoDigitToStr(number) {
@@ -91,8 +102,7 @@ function twoDigitToStr(number) {
   let chuc = parseInt(number / 10);  // 25 => 2                              
   let donvi = number % 10;           // 25 => 5
   if (donvi === 0) return `${oneDigitToStr(chuc)} mươi`;
-  return chuc == 1  ? `mười ${oneDigitToStr(donvi)}`
-                    : `${oneDigitToStr(chuc)} mươi ${oneDigitToStr(donvi)}`;
+  return `${oneDigitToStr(chuc)} mươi ${oneDigitToStr(donvi)}`;
 }
 
 function threeDigitToStr(number) {
@@ -102,12 +112,6 @@ function threeDigitToStr(number) {
   if (chuc < 10 && chuc > 0) chuc = `lẻ ${oneDigitToStr(chuc)}`;
   else { chuc = twoDigitToStr(chuc) };
   return `${oneDigitToStr(tram)} trăm ${chuc}`
-}
-
-
-const numberStr = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười"]
-function number2str(number) {
-  return numberStr[number]
 }
 
 

@@ -5,7 +5,7 @@ const result = document.querySelector(".result");
 const input = document.querySelector('.input')
 const value = document.querySelector('.value')
 
-value.oninput = function(evt) {
+value.oninput = function() {
   if (isNaN(this.textContent)) {
     return alert("chỉ được nhập số! ")
   }
