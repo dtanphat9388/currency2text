@@ -23,6 +23,7 @@
   "dependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
+    "cleave.js": "^1.4.4",
     "lodash": "^4.17.11"
   },
   "devDependencies": {

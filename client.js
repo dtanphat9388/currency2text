@@ -5,15 +5,20 @@ const result = document.querySelector(".result");
 const input = document.querySelector('.input')
 const value = document.querySelector('.value')
 
-value.oninput = function() {
-  if (isNaN(this.textContent)) {
-    return alert("chỉ được nhập số! ")
+value.oninput = function(e) {
+  this.value !== 0 ? input.classList.remove("empty")
+  : input.classList.add("empty")
+  
+  let rawValue = this.value.replace(/,/g, "")
+  
+  if (rawValue.length > 18) {
+    rawValue = rawValue.slice(0, 18)
   }
+                    
+  result.textContent = convert(rawValue);
 
-  this.textContent !== "" ? input.classList.remove("empty")
-                          : input.classList.add("empty")
-
-  result.textContent = convert(this.textContent);
+  const thousand = (+rawValue).toLocaleString('vn')
+  this.value = thousand
 }
 
 value.onkeypress = function(evt) {

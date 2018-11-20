@@ -30,6 +30,7 @@ const defaultOptions = {
   unit: 'đồng',
 }
 function convert(number, options=defaultOptions) {
+  if (typeof number !== 'number') number = +number;
   const _number = `${number}`.slice(-majorLimit); // limited to 18 digits
   if (!/^\d+$/g.test(_number)) throw new Error("Argument have to a number!");
 
@@ -98,11 +99,12 @@ function oneDigitToStr(number) {
 }
 
 function twoDigitToStr(number) {
-  if (number == 10) return oneDigitToStr(number); 
   let chuc = parseInt(number / 10);  // 25 => 2                              
   let donvi = number % 10;           // 25 => 5
-  if (donvi === 0) return `${oneDigitToStr(chuc)} mươi`;
-  return `${oneDigitToStr(chuc)} mươi ${oneDigitToStr(donvi)}`;
+  if (number == 10) return oneDigitToStr(number);                         // 10
+  if (chuc !== 1 && donvi === 0) return `${oneDigitToStr(chuc)} mươi`;    // 20, 30, ..., 90
+  if (chuc === 1 && donvi !== 0) return `muời ${oneDigitToStr(donvi)}`;   // 1x
+  return `${oneDigitToStr(chuc)} mươi ${oneDigitToStr(donvi)}`;           // xx
 }
 
 function threeDigitToStr(number) {

@@ -12,7 +12,8 @@ img {
   font-family: monospace;
 }
 
-.input div {
+.input * {
+  height: 60px;
   font-size: 4em;
   outline: none;
 }
@@ -22,8 +23,11 @@ img {
 }
 
 .input .value {
+  width: 100%;
   position: relative;
   font-weight: bold;
+  border: transparent;
+  background-color: transparent
 }
 
 .input.empty .placeholder {
