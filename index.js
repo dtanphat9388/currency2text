@@ -52,6 +52,7 @@ function handleMajor(major, blocks, options) {
 
   const minorsCompacted = _.compact(_.zipWith(minorsNumber, blocks, (number, block) => {
     if (number == 0 && block == "đồng") return "chẵn";
+    if (number == 0 && block == "tỷ" && minorsNumber.length > 4) return 'tỷ'
     if (number == 0) return number;
     return {number, block}
   }))
