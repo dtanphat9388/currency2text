@@ -1,6 +1,6 @@
 {
   "name": "currency2string",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "To convert currency number to text",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,6 @@
   "dependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
-    "cleave.js": "^1.4.4",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
