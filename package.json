@@ -1,6 +1,6 @@
 {
   "name": "currency2text",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "To convert currency number to text",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dtanphat9388/currency2string.git"
+    "url": "git+https://github.com/dtanphat9388/currency2text.git"
   },
   "keywords": [
     "convert",
@@ -17,9 +17,9 @@
   "author": "dtanphat9388",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dtanphat9388/currency2string/issues"
+    "url": "https://github.com/dtanphat9388/currency2text/issues"
   },
-  "homepage": "https://github.com/dtanphat9388/currency2string#readme",
+  "homepage": "https://github.com/dtanphat9388/currency2text#readme",
   "dependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
