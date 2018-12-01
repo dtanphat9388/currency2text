@@ -50,27 +50,26 @@ function handleMajor(major, blocks, options) {
   const minorsString = major.match(/\d{3}/g)
   const minorsNumber = _.map(minorsString, (minor) => +minor) // remove 0 trong mỗi minor block
 
-  const minorsCompacted = _.compact(_.zipWith(minorsNumber, blocks, (number, block) => {
-    if (number == 0 && block == "đồng") return "chẵn";
-    if (number == 0 && block == "tỷ" && minorsNumber.length > 4) return 'tỷ'
-    if (number == 0) return number;
-    return {number, block}
-  }))
-
+  const minorsMerge = _.zipWith(minorsNumber, blocks, (number, block) => ({block, number}))
+  const minorsCompacted = _.dropWhile(minorsMerge, item => item.number == 0)
+  
   return _.reduce(minorsCompacted, (prev, curr, index, list) => {
     let prevStr = typeof prev !== "string" ? `${handleDigitToStr(prev.number)} ${prev.block}` : prev;
-    let currStr = typeof curr !== "string" ? `${handleDigitToStr(curr.number)} ${curr.block}` : curr;
+    let currStr = '';
 
-    if (currStr !== "chẵn") {
+    if (curr.number == 0) {
+      if (curr.block == "tỷ")   currStr = 'tỷ';
+      if (curr.block == 'đồng') currStr = 'chẵn';
+    }
+    else {
+      currStr = `${handleDigitToStr(curr.number)} ${curr.block}`
       switch (`${curr.number}`.length) {
         case 1: prevStr += " không trăm lẻ"; break;
         case 2: prevStr += " không trăm"   ; break;
       }
     }
 
-    const unit = typeof currStr === "string" ? currStr : options.unit;
-    return (list[-1] !== curr) ? `${prevStr} ${currStr}`
-                               : `${prevStr} ${currStr} ${unit}`
+    return `${prevStr} ${currStr}`;
   })
 }
 
