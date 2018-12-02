@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "To convert currency number to text",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dtanphat9388/currency2text.git"
@@ -21,13 +18,6 @@
   },
   "homepage": "https://github.com/dtanphat9388/currency2text#readme",
   "dependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.6",
     "lodash": "^4.17.11"
-  },
-  "devDependencies": {
-    "babel-loader": "^8.0.4",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2"
   }
 }
