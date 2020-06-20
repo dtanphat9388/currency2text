@@ -5,13 +5,13 @@
     major  : xxx   xxx   xxx xxx 
  */
 
- /** WORKFLOW
-  *   number:                 103 056
-  *   fill 0:         000 000 103 056
-  *   remove 0:         0   0 103  56
-  *   replace 0 = "":  ""  "" 103  56 => handleText
-  *   zip           :  ty trieu ngan dong
-  */ 
+/** WORKFLOW
+ *   number:                 103 056
+ *   fill 0:         000 000 103 056
+ *   remove 0:         0   0 103  56
+ *   replace 0 = "":  ""  "" 103  56 => handleText
+ *   zip           :  ty trieu ngan dong
+ */
 
 /** CASE
  *  2 số:  0-9    => không - chính
@@ -29,7 +29,7 @@ const majorLimit = 18
 const defaultOptions = {
   unit: 'đồng',
 }
-function convert(number, options=defaultOptions) {
+function convert(number, options = defaultOptions) {
   if (typeof number !== 'number') number = +number;
   const _number = `${number}`.slice(-majorLimit); // limited to 18 digits
   if (!/^\d+$/g.test(_number)) throw new Error("Argument have to a number!");
@@ -40,7 +40,7 @@ function convert(number, options=defaultOptions) {
 
   const { unit } = options;
   blocks[5] || blocks.push(unit)
-  
+
   const major = fillNumber(_number, majorLimit)
   return handleMajor(major, blocks, options)
 }
@@ -50,22 +50,22 @@ function handleMajor(major, blocks, options) {
   const minorsString = major.match(/\d{3}/g)
   const minorsNumber = _.map(minorsString, (minor) => +minor) // remove 0 trong mỗi minor block
 
-  const minorsMerge = _.zipWith(minorsNumber, blocks, (number, block) => ({block, number}))
+  const minorsMerge = _.zipWith(minorsNumber, blocks, (number, block) => ({ block, number }))
   const minorsCompacted = _.dropWhile(minorsMerge, item => item.number == 0)
-  
+
   return _.reduce(minorsCompacted, (prev, curr, index, list) => {
     let prevStr = typeof prev !== "string" ? `${handleDigitToStr(prev.number)} ${prev.block}` : prev;
     let currStr = '';
 
     if (curr.number == 0) {
-      if (curr.block == "tỷ")   currStr = 'tỷ';
+      if (curr.block == "tỷ") currStr = 'tỷ';
       if (curr.block == 'đồng') currStr = 'chẵn';
     }
     else {
       currStr = `${handleDigitToStr(curr.number)} ${curr.block}`
       switch (`${curr.number}`.length) {
         case 1: prevStr += " không trăm lẻ"; break;
-        case 2: prevStr += " không trăm"   ; break;
+        case 2: prevStr += " không trăm"; break;
       }
     }
 
@@ -79,14 +79,14 @@ function handleMajor(major, blocks, options) {
  */
 function fillNumber(number, limit) {
   const numberLength = `${number}`.length;
-  const fillLength = (numberLength % limit == 0)  ? `${number}`
-                                                  : _.padStart(`${number}`, limit, 0)
+  const fillLength = (numberLength % limit == 0) ? `${number}`
+    : _.padStart(`${number}`, limit, 0)
   return fillLength
 }
 
 
 function handleDigitToStr(number) {
-  switch(`${number}`.length) {
+  switch (`${number}`.length) {
     case 1: return oneDigitToStr(number);
     case 2: return twoDigitToStr(number);
     case 3: return threeDigitToStr(number);
