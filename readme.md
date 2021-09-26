@@ -1,6 +1,6 @@
 ## Status: WIP
 - chưa xử lý block đồng
-- thêm "không trăm" vào các block để đọc tự nhiên hơn
+- chưa xử lý trường hop block là '000'
 
 
 [demo](https://dtanphat9388.github.io/opensources/currency2text/)
