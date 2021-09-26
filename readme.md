@@ -1,3 +1,8 @@
+## Status: WIP
+- chưa xử lý block đồng
+- thêm "không trăm" vào các block để đọc tự nhiên hơn
+
+
 [demo](https://dtanphat9388.github.io/opensources/currency2text/)
 
 # Notes:
