@@ -20,9 +20,10 @@ export default function main(input:string): string {
     const unitsLenght = units.length
     const result = blocks.map((block, index) => {
       const unitOfBlock = units[index % unitsLenght]
+      if (block === '000') return
       return handleBlock(block, unitOfBlock)
     })
-    return result.reverse().join(" ")
+    return result.filter(Boolean).reverse().join(" ")
   }
   else {
     return ""
@@ -74,3 +75,5 @@ function handleThreeNumberToString(block:block): string {
   if (chuc === 0) return `${text_tram} trăm`;
   return `${text_tram} trăm ${text_chuc}`
 }
+
+console.log(main("1000002"))

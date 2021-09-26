@@ -1,6 +1,5 @@
 ## Status: WIP
 - chưa xử lý block đồng
-- chưa xử lý trường hop block là '000'
 
 
 [demo](https://dtanphat9388.github.io/opensources/currency2text/)
