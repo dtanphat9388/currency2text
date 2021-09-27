@@ -1,4 +1,4 @@
-const currency = "đông"
+const currency = "đồng"
 const evenCurrency = "chẵn"
 const units = [ "ngàn", "triệu", "tỷ" ]
 
