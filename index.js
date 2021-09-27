@@ -2,12 +2,12 @@ const currency = "đồng"
 const evenCurrency = "chẵn"
 const units = [ "ngàn", "triệu", "tỷ" ]
 
-export default function main(currencyNumber) {
-  const isValidInput = checkValid(currencyNumber)
-  if (!isValidInput) return
-
+function main(currencyNumber) {
   /* remove 0 on start and spaces */
-  const rawInput = `${+currencyNumber}`.trim()
+  const rawInput = `${currencyNumber}`.replace(/[ _\-\.,]*/g, '').replace(/^0*/g, '')
+
+  const isValidInput = checkValid(rawInput)
+  if (!isValidInput) return
 
   /* '1234' => '001234' */
   const input = addPadding(rawInput)
