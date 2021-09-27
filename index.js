@@ -1,137 +1,105 @@
-/* 
-    unit   :  ty trieu ngan dong
-    number : 123   456  789  123
-    minor  : abc   abc  abc  abc
-    major  : xxx   xxx  xxx  xxx 
- */
+const currency = "đông"
+const evenCurrency = "chẵn"
+const units = [ "ngàn", "triệu", "tỷ" ]
 
-/** WORKFLOW
- *   input:                  103 056
- *   fill 0:         000 000 103 056
- *   remove 0:         0   0 103  56
- *   replace 0 = "":  ""  "" 103  56 => handleText
- *   zip           :  ty trieu ngan dong
- */
+export default function main(currencyNumber) {
+  const isValidInput = checkValid(currencyNumber)
+  if (!isValidInput) return
 
-/** CASE
- *  2 số:  0-9    => không - chín
- *         10     => mười
- *         1x     => mười <x>
- *         xx     => <x> mươi <x>
- *  
- *  3 số:  x0x    => <x> trăm lẻ <x>
- */
-const _ = require('lodash')
+  /* remove 0 on start and spaces */
+  const rawInput = `${+currencyNumber}`.trim()
 
-const defaultOptions = {
-  unit: 'đồng',
-  blocks: ['triệu', 'ngàn', 'tỷ', 'triệu', 'ngàn'],
-  majorLimit: 18
+  /* '1234' => '001234' */
+  const input = addPadding(rawInput)
+
+  let blocks = input.match(/\d{3}/g)
+  let lastBlock = blocks.pop()
+
+  const lastBlockText = handleBlock(lastBlock) + (lastBlock === '000' ? evenCurrency : currency)
+  const blocksText = handleBlocks(blocks, units)
+
+  return `${blocksText} ${lastBlockText}`
 }
 
-/**
- * @param {string|number} number 
- * @param {object} options 
- */
-function main(number = 0, options = defaultOptions) {
-  try {
-    let _number = `${+number}`
+function checkValid(input) {
+  const regexCheckAllDigits = /^\d+$/g
+  const isAllDigits = regexCheckAllDigits.test(input)
+  return isAllDigits
+}
 
-    if (!/^\d+$/g.test(_number)) return "Số không hợp lệ";
+function addPadding(input) {
+  const inputLenght = input.length
+  const restBlockLength = inputLenght % 3
 
-    _number = _number.slice(-options.majorLimit); // limited to 18 digits
-
-    switch (_number.length) {
-      case 1: case 2: case 3: return `${handleDigitToStr(number)} ${options.unit}`
-    }
-
-    const { unit } = options;
-    options.blocks[5] || options.blocks.push(unit)
-
-    return handleMajor(number, options.blocks, options)
-  }
-  catch (err) {
-    return err.message
+  if (restBlockLength === 0) return input
+  else {
+    const targetLength = inputLenght + (3 - restBlockLength)
+    return input.padStart(targetLength, '0')
   }
 }
 
+function handleBlock(block) {
+  if (block === '000') return ''
 
-function handleMajor(major, blocks, options) {
-  major = fillNumber(major, options.majorLimit)
-  const minorsString = major.match(/\d{3}/g)
-  const minorsNumber = _.map(minorsString, (minor) => +minor) // remove 0 trong mỗi minor block
+  let text = '';
+  switch (`${block}`.length) {
+    case 1: text = handleOneNumberToString(block); break;
+    case 2: text = handleTwoNumberToString(block); break;
+    case 3: text = handleThreeNumberToString(block); break;
+    default: break;
+  }
 
-  const minorsMerge = _.zipWith(minorsNumber, blocks, (number, block) => ({ number, block }))
-  const minorsCompacted = _.dropWhile(minorsMerge, item => item.number == 0)
+  return `${text}`
+}
 
-  return _.reduce(minorsCompacted, (prev, curr, index, list) => {
-    let prevStr = typeof prev !== "string" ? `${handleDigitToStr(prev.number)} ${prev.block}` : prev;
-    let currStr = '';
+function handleBlocks(blocks, units) {
+  blocks.reverse()
 
-    if (curr.number == 0) {
-      if (curr.block == "tỷ") currStr = 'tỷ';
-      if (curr.block == 'đồng') currStr = 'chẵn';
+  const blocksLenght = blocks.length
+  const result = blocks.map((block, index) => {
+    if (index === blocksLenght - 1) {
+      block = block.replace(/^0*/g, '')
     }
-    else {
-      currStr = `${handleDigitToStr(curr.number)} ${curr.block}`
-      switch (`${curr.number}`.length) {
-        case 1: prevStr += " không trăm lẻ"; break;
-        case 2: prevStr += " không trăm"; break;
-      }
-    }
-
-    return `${prevStr} ${currStr}`;
+    return handleBlock(block)
   })
+
+  const unitsLenght = units.length
+  const resultWithUnit = result.map((block, index) => {
+    if (!block) return ''
+    const unitOfBlock = units[ index % unitsLenght ]
+    return `${block} ${unitOfBlock}`
+  })
+
+  return resultWithUnit.filter(Boolean).reverse().join(" ")
 }
 
-
-/**
- * @description thêm 0 vào trước cho đủ  12 số (123456 => 000000123456)
- */
-function fillNumber(number, limit) {
-  const numberLength = `${number}`.length;
-  const fillLength = (numberLength % limit == 0) ? `${number}`
-    : _.padStart(`${number}`, limit, 0)
-  return fillLength
+function handleOneNumberToString(block) {
+  const numberStr = [ "không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín" ]
+  return numberStr[ block ]
 }
 
+function handleTwoNumberToString(block) {
+  const chuc = parseInt(`${+block / 10}`)  // 25 => 2                              
+  const donvi = +block % 10; // 25 => 5
 
-function handleDigitToStr(number) {
-  switch (`${number}`.length) {
-    case 1: return oneDigitToStr(number);
-    case 2: return twoDigitToStr(number);
-    case 3: return threeDigitToStr(number);
-  }
+  const text_chuc = handleOneNumberToString(chuc)
+  const text_donvi = handleOneNumberToString(donvi)
+
+  if (chuc === 1 && donvi === 0) return "mười";                  // 10
+  if (chuc === 1 && donvi !== 0) return `muời ${text_donvi}`;    // 1x
+  if (chuc !== 1 && donvi === 0) return `${text_chuc} mươi`;     // x0
+
+  return `${text_chuc} mươi ${text_donvi}`;
 }
 
-const numberStr = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"]
-function oneDigitToStr(number) {
-  return numberStr[number]
-}
+function handleThreeNumberToString(block) {
+  const tram = `${block}`[ 0 ] // 325 => 3
+  const chuc = +block % 100; // 325 => 25
 
-function twoDigitToStr(number) {
-  const chuc = parseInt(number / 10);  // 25 => 2                              
-  const donvi = number % 10;           // 25 => 5
-
-  const text_chuc = oneDigitToStr(chuc)
-  const text_donvi = oneDigitToStr(donvi)
-
-  if (chuc === 1 && donvi === 0) return "mười";                   // 10
-  if (chuc === 1 && donvi !== 0) return `muời ${text_chuc}`;      // 1x
-  if (chuc !== 1 && donvi === 0) return `${text_donvi} mươi`;     // 20, 30, ..., 90
-  return `${text_chuc} mươi ${text_donvi}`;                       // xx
-}
-
-function threeDigitToStr(number) {
-  const tram = parseInt(number / 100); // 325 => 3
-  const chuc = number % 100;           // 325 => 25
-
-  const text_tram = oneDigitToStr(tram)
-  const text_chuc = chuc < 10 && chuc > 0 ? `lẻ ${oneDigitToStr(chuc)}` : twoDigitToStr(chuc)
+  const text_tram = handleOneNumberToString(tram)
+  const text_chuc = chuc < 10 && chuc > 0 ? `lẻ ${handleOneNumberToString(chuc)}` : handleTwoNumberToString(chuc)
 
   if (chuc === 0) return `${text_tram} trăm`;
+
   return `${text_tram} trăm ${text_chuc}`
 }
-
-console.log(main("1535432"))
-module.exports = main
