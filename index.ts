@@ -8,7 +8,8 @@ export default function main(currencyNumber:string): string {
   const isValidInput = checkValid(currencyNumber)
   if (!isValidInput) return
 
-  const rawInput = `${currencyNumber}`.trim()
+  /* remove 0 on start and spaces */
+  const rawInput = `${+currencyNumber}`.trim()
 
   /* '1234' => '001234' */
   const input = addPadding(rawInput)
@@ -31,6 +32,7 @@ function checkValid(input:string): boolean {
 function addPadding(input:string): string {
   const inputLenght = input.length
   const restBlockLength = inputLenght % 3
+
   if (restBlockLength === 0) return input
   else {
     const targetLength = inputLenght + (3 - restBlockLength)
@@ -40,6 +42,7 @@ function addPadding(input:string): string {
 
 function handleBlock(block:string): string {
   if (block === '000') return ''
+
   let text:string = '';
   switch (`${block}`.length) {
     case 1: text = handleOneNumberToString(block); break;
@@ -47,6 +50,7 @@ function handleBlock(block:string): string {
     case 3: text = handleThreeNumberToString(block); break;
     default: break;
   }
+
   return `${text}`
 }
 
@@ -86,6 +90,7 @@ function handleTwoNumberToString(block:block): string {
   if (chuc === 1 && donvi === 0) return "mười";                  // 10
   if (chuc === 1 && donvi !== 0) return `muời ${text_donvi}`;    // 1x
   if (chuc !== 1 && donvi === 0) return `${text_chuc} mươi`;     // x0
+
   return `${text_chuc} mươi ${text_donvi}`;  
 }
 
@@ -97,7 +102,6 @@ function handleThreeNumberToString(block:block): string {
   const text_chuc = chuc < 10 && chuc > 0 ? `lẻ ${handleOneNumberToString(chuc)}` : handleTwoNumberToString(chuc)
 
   if (chuc === 0) return `${text_tram} trăm`;
+
   return `${text_tram} trăm ${text_chuc}`
 }
-
-console.log(main("1000000"))
