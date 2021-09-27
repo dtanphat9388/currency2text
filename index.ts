@@ -1,42 +1,45 @@
 type block = string | number
 
 const currency = "đông"
+const evenCurrency = "chẵn"
 const units = [ "ngàn", "triệu", "tỷ" ]
-export default function main(input:string): string {
-  if (!inputValidation(input)) {
-    let blocks:string[];
 
-    const firstBlock:number = input.length % 3
-    if (firstBlock === 0) {
-      blocks = input.match(/\d{3}/g)
-    } else {
-      const firstBlockNumber = [ input.slice(0, firstBlock) ]
-      const restBlockNumber = input.slice(firstBlock).match(/\d{3}/g)
-      blocks = [].concat(firstBlockNumber, restBlockNumber)
-    }
+export default function main(currencyNumber:string): string {
+  const isValidInput = checkValid(currencyNumber)
+  if (!isValidInput) return
 
-    blocks.reverse()
+  const rawInput = `${currencyNumber}`.trim()
 
-    const unitsLenght = units.length
-    const result = blocks.map((block, index) => {
-      const unitOfBlock = units[index % unitsLenght]
-      if (block === '000') return
-      return handleBlock(block, unitOfBlock)
-    })
-    return result.filter(Boolean).reverse().join(" ")
-  }
+  /* '1234' => '001234' */
+  const input = addPadding(rawInput)
+
+  let blocks = input.match(/\d{3}/g)
+  let lastBlock = blocks.pop()
+
+  const lastBlockText = handleBlock(lastBlock) + (lastBlock === '000' ? evenCurrency : currency)
+  const blocksText = handleBlocks(blocks, units)
+
+  return  `${blocksText} ${lastBlockText}`
+}
+
+function checkValid(input:string): boolean {
+  const regexCheckAllDigits = /^\d+$/g
+  const isAllDigits = regexCheckAllDigits.test(input)
+  return isAllDigits
+}
+
+function addPadding(input:string): string {
+  const inputLenght = input.length
+  const restBlockLength = inputLenght % 3
+  if (restBlockLength === 0) return input
   else {
-    return ""
+    const targetLength = inputLenght + (3 - restBlockLength)
+    return input.padStart(targetLength, '0')
   }
 }
 
-function inputValidation(input:string):boolean {
-  const regexCheckAlphaExist = /[a-zA-Z]/g
-  const strExisted = regexCheckAlphaExist.test(input)
-  return strExisted
-}
-
-function handleBlock(block:string, unit:string): string {
+function handleBlock(block:string): string {
+  if (block === '000') return ''
   let text:string = '';
   switch (`${block}`.length) {
     case 1: text = handleOneNumberToString(block); break;
@@ -44,7 +47,28 @@ function handleBlock(block:string, unit:string): string {
     case 3: text = handleThreeNumberToString(block); break;
     default: break;
   }
-  return `${text} ${unit}`
+  return `${text}`
+}
+
+function handleBlocks(blocks: string[], units: string[]): string {
+  blocks.reverse()
+
+  const blocksLenght = blocks.length
+  const result = blocks.map((block, index) => {
+    if (index === blocksLenght -1) {
+      block = block.replace(/^0*/g, '')
+    }
+    return handleBlock(block)
+  })
+  
+  const unitsLenght = units.length
+  const resultWithUnit = result.map((block, index) => {
+    if (!block) return ''
+    const unitOfBlock = units[index % unitsLenght]
+    return `${block} ${unitOfBlock}`
+  })
+
+  return resultWithUnit.filter(Boolean).reverse().join(" ")
 }
 
 function handleOneNumberToString(block:block): string {
@@ -76,4 +100,4 @@ function handleThreeNumberToString(block:block): string {
   return `${text_tram} trăm ${text_chuc}`
 }
 
-console.log(main("1000002"))
+console.log(main("1000000"))
