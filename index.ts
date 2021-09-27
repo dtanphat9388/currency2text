@@ -1,15 +1,15 @@
 type block = string | number
 
-const currency = "đông"
+const currency = "đồng"
 const evenCurrency = "chẵn"
 const units = [ "ngàn", "triệu", "tỷ" ]
 
 export default function main(currencyNumber:string): string {
-  const isValidInput = checkValid(currencyNumber)
-  if (!isValidInput) return
-
   /* remove 0 on start and spaces */
-  const rawInput = `${+currencyNumber}`.trim()
+  const rawInput = `${currencyNumber}`.replace(/[ _\-\.,]*/g, '').replace(/^0*/g, '')
+
+  const isValidInput = checkValid(rawInput)
+  if (!isValidInput) return
 
   /* '1234' => '001234' */
   const input = addPadding(rawInput)
@@ -105,3 +105,5 @@ function handleThreeNumberToString(block:block): string {
 
   return `${text_tram} trăm ${text_chuc}`
 }
+
+console.log(main("1_000"))
