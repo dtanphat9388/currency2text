@@ -9,7 +9,11 @@ export default function main(currencyNumber:string): string {
   const rawInput = `${currencyNumber}`.replace(/[ _\-\.,]*/g, '').replace(/^0*/g, '')
 
   const isValidInput = checkValid(rawInput)
-  if (!isValidInput) return
+  if (!isValidInput) return ''
+
+  if (rawInput.length <= 3) {
+    return handleBlock(rawInput) + " " + currency
+  }
 
   /* '1234' => '001234' */
   const input = addPadding(rawInput)
@@ -17,7 +21,7 @@ export default function main(currencyNumber:string): string {
   let blocks = input.match(/\d{3}/g)
   let lastBlock = blocks.pop()
 
-  const lastBlockText = handleBlock(lastBlock) + (lastBlock === '000' ? evenCurrency : currency)
+  const lastBlockText = lastBlock === '000' ? evenCurrency : `${handleBlock(lastBlock)} ${currency}`
   const blocksText = handleBlocks(blocks, units)
 
   return  `${blocksText} ${lastBlockText}`
@@ -88,7 +92,7 @@ function handleTwoNumberToString(block:block): string {
   const text_donvi = handleOneNumberToString(donvi)
 
   if (chuc === 1 && donvi === 0) return "mười";                  // 10
-  if (chuc === 1 && donvi !== 0) return `muời ${text_donvi}`;    // 1x
+  if (chuc === 1 && donvi !== 0) return `mười ${text_donvi}`;    // 1x
   if (chuc !== 1 && donvi === 0) return `${text_chuc} mươi`;     // x0
 
   return `${text_chuc} mươi ${text_donvi}`;  
@@ -105,5 +109,3 @@ function handleThreeNumberToString(block:block): string {
 
   return `${text_tram} trăm ${text_chuc}`
 }
-
-console.log(main("1_000"))

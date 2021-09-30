@@ -11,13 +11,13 @@
     "convert",
     "currency"
   ],
-  "author": "dtanphat9388",
+  "author": "dtanphat9388@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dtanphat9388/currency2text/issues"
   },
   "homepage": "https://github.com/dtanphat9388/currency2text#readme",
-  "dependencies": {
-    "lodash": "^4.17.11"
+  "devDependencies": {
+    "@types/node": "^16.10.1"
   }
 }
