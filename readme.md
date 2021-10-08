@@ -4,6 +4,13 @@
 
 [demo](https://dtanphat9388.github.io/opensources/currency2text/)
 
+# TOC
+- install
+- how to use
+- api references
+
+---
+
 1. Install
 ```sh
 npm i currency2text
