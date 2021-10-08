@@ -6,7 +6,7 @@ const units = [ "ngàn", "triệu", "tỷ" ]
 
 export default function main(currencyNumber:string): string {
   /* remove 0 on start and spaces */
-  const rawInput = `${currencyNumber}`.replace(/[ _\-\.,]*/g, '').replace(/^0*/g, '')
+  const rawInput = removeThousandSeparator(currencyNumber)
 
   const isValidInput = checkValid(rawInput)
   if (!isValidInput) return ''
@@ -18,7 +18,7 @@ export default function main(currencyNumber:string): string {
   /* '1234' => '001234' */
   const input = addPadding(rawInput)
 
-  let blocks = input.match(/\d{3}/g)
+  let blocks = breakInputToBlocks(input)
   let lastBlock = blocks.pop()
 
   const lastBlockText = lastBlock === '000' ? evenCurrency : `${handleBlock(lastBlock)} ${currency}`
@@ -27,13 +27,13 @@ export default function main(currencyNumber:string): string {
   return  `${blocksText} ${lastBlockText}`
 }
 
-function checkValid(input:string): boolean {
+export function checkValid(input:string): boolean {
   const regexCheckAllDigits = /^\d+$/g
   const isAllDigits = regexCheckAllDigits.test(input)
   return isAllDigits
 }
 
-function addPadding(input:string): string {
+export function addPadding(input:string): string {
   const inputLenght = input.length
   const restBlockLength = inputLenght % 3
 
@@ -44,6 +44,10 @@ function addPadding(input:string): string {
   }
 }
 
+export function breakInputToBlocks(input:string):string[] {
+  return input.match(/\d{3}/g) 
+}
+
 function handleBlock(block:string): string {
   if (block === '000') return ''
 
@@ -51,8 +55,7 @@ function handleBlock(block:string): string {
   switch (`${block}`.length) {
     case 1: text = handleOneNumberToString(block); break;
     case 2: text =  handleTwoNumberToString(block); break;
-    case 3: text = handleThreeNumberToString(block); break;
-    default: break;
+    default: text = handleThreeNumberToString(block);
   }
 
   return `${text}`
@@ -79,12 +82,17 @@ function handleBlocks(blocks: string[], units: string[]): string {
   return resultWithUnit.filter(Boolean).reverse().join(" ")
 }
 
-function handleOneNumberToString(block:block): string {
+export function removeThousandSeparator(input:string):string {
+  return input.replace(/^0*|[ -._]/g, '')
+}
+export function handleOneNumberToString(block:block): string {
   const numberStr = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"]
   return numberStr[block]
 }
 
-function handleTwoNumberToString(block:block): string {
+export function handleTwoNumberToString(block:block): string {
+  if (+block === 0) return "không"
+
   const chuc = parseInt(`${+block / 10}`)  // 25 => 2                              
   const donvi = +block % 10; // 25 => 5
 
@@ -98,7 +106,9 @@ function handleTwoNumberToString(block:block): string {
   return `${text_chuc} mươi ${text_donvi}`;  
 }
 
-function handleThreeNumberToString(block:block): string {
+export function handleThreeNumberToString(block:block): string {
+  if (+block === 0) return "không"
+
   const tram = `${block}`[0] // 325 => 3
   const chuc = +block % 100; // 325 => 25
 
