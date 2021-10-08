@@ -7,17 +7,30 @@
     "type": "git",
     "url": "git+https://github.com/dtanphat9388/currency2text.git"
   },
+  "scripts": {
+    "test": "jest"
+  },
   "keywords": [
     "convert",
     "currency"
   ],
-  "author": "dtanphat9388",
+  "author": "dtanphat9388@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dtanphat9388/currency2text/issues"
   },
   "homepage": "https://github.com/dtanphat9388/currency2text#readme",
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.10.1",
+    "babel-jest": "^27.2.5",
+    "jest": "^27.2.4",
+    "typescript": "^4.4.3"
+  },
   "dependencies": {
-    "lodash": "^4.17.11"
+    "ts-node": "^10.2.1"
   }
 }

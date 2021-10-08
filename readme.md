@@ -1,3 +1,7 @@
+## Status: WIP
+- chưa xử lý block đồng
+
+
 [demo](https://dtanphat9388.github.io/opensources/currency2text/)
 
 # Notes:

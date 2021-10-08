@@ -5,11 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "chrome",
+      "type": "node",
       "request": "launch",
-      "name": "Launch Chrome",
-      "url": "http://localhost:5500",
-      "webRoot": "${file}",
-    }
+      "name": "Current File",
+      "program": "${workspaceFolder}/index.ts",
+      // "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "skipFiles": [
+        "node_modules/**/*.js",
+        "lib/**/*.js",
+        "<node_internals>/**/*.js",
+        "<evel>/*.js"
+      ],
+    },
   ]
 }
