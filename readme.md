@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/dtanphat9388/currency2text/badge.svg)](https://coveralls.io/github/dtanphat9388/currency2text)
+
 # Description
 - convert number to currency text for invoices
 - Supported languages: `vi`
