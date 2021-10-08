@@ -1,0 +1,7 @@
+name: currency2text
+description: convert number to currency text for invoices
+author: dtanphat9388
+
+runs:
+  using: node12
+  main: dist/index.js 
