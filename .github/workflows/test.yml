@@ -20,8 +20,8 @@ jobs:
       with:
         node-version: 12
 
-    - run: npm ci
-    - run: npm test
+    - run: yarn
+    - run: yarn test
 
 
     - name: Coveralls
