@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dtanphat9388/currency2text#readme",
   "devDependencies": {
-    "@types/node": "^16.10.1"
+    "@types/node": "^16.10.1",
+    "jest": "^27.2.4"
   }
 }
