@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - setup/ci
+      - master
   pull_request:
     branches:
-      - setup/ci
+      - master
 
 name: Test Coveralls
 
