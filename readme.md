@@ -1,3 +1,7 @@
+# Description
+- convert number to currency text for invoices
+- Supported languages: `vi`
+
 [demo](https://dtanphat9388.github.io/opensources/currency2text/)
 
 1. Install
