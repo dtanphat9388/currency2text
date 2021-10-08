@@ -2,13 +2,14 @@
   "name": "currency2text",
   "version": "1.0.0",
   "description": "To convert currency number to text",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dtanphat9388/currency2text.git"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest && coveralls < coverage/lcov.info",
+    "postTest": "rm -rf ./dist && tsc"
   },
   "keywords": [
     "convert",
