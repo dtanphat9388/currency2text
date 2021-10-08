@@ -8,7 +8,7 @@
     "url": "git+https://github.com/dtanphat9388/currency2text.git"
   },
   "scripts": {
-    "test": "jest && coveralls < coverage/lcov.info",
+    "test": "jest",
     "postTest": "rm -rf ./dist && tsc"
   },
   "keywords": [
