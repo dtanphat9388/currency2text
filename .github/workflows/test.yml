@@ -1,4 +1,10 @@
-on: ["push", "pull_request"]
+on:
+  push:
+    branches:
+      - setup/ci
+  pull_request:
+    branches:
+      - setup/ci
 
 name: Test Coveralls
 
