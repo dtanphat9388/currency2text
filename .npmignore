@@ -5,6 +5,6 @@
 !dist
 # The following paths and files are never ignored
 !package.json
-!README
+!README.md
 !CHANGELOG
 !LICENSE
