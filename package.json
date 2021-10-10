@@ -1,6 +1,6 @@
 {
   "name": "currency2text",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "To convert currency number to text",
   "main": "dist/index.js",
   "repository": {
