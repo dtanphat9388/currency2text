@@ -1,0 +1,10 @@
+.*
+
+
+# NOT ignored
+!dist
+# The following paths and files are never ignored
+!package.json
+!README
+!CHANGELOG
+!LICENSE
