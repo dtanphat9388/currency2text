@@ -12,7 +12,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -26,3 +26,6 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: NPM Publish
+      uses: JS-DevTools/npm-publish@v1
