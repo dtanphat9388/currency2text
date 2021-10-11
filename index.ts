@@ -18,8 +18,8 @@ export default function main(currencyNumber:string): string {
   /* '1234' => '001234' */
   const input = addPadding(rawInput)
 
-  let blocks = breakInputToBlocks(input)
-  let lastBlock = blocks.pop()
+  const blocks = breakInputToBlocks(input)
+  const lastBlock = blocks.pop()
 
   const lastBlockText = lastBlock === '000' ? evenCurrency : `${handleBlock(lastBlock)} ${currency}`
   const blocksText = handleBlocks(blocks, units)
@@ -51,7 +51,7 @@ export function breakInputToBlocks(input:string):string[] {
 function handleBlock(block:string): string {
   if (block === '000') return ''
 
-  let text:string = '';
+  let text = '';
   switch (`${block}`.length) {
     case 1: text = handleOneNumberToString(block); break;
     case 2: text =  handleTwoNumberToString(block); break;
